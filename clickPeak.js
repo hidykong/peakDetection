@@ -3,6 +3,9 @@ var margin = {top: 20.5, right: 30, bottom: 30, left: 40.5},
     width = 1600 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
+var userPeaks = [];
+var totalPeaks = 5;
+
 var x = d3.time.scale()
     .range([0, width]);
 
@@ -27,6 +30,16 @@ var svg = d3.select("body").append("svg")
 
 var trans = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var toggleColor = (function(){
+   var currentColor = "white";
+    
+    return function(){
+        currentColor = currentColor == "white" ? "magenta" : "white";
+        d3.select(this).style("fill", currentColor);
+    }
+})();
+
 
 d3.csv("csvlist.csv", type, function(error, data) {
 
@@ -102,7 +115,6 @@ d3.csv("csvlist.csv", type, function(error, data) {
   if (d3.event.defaultPrevented) return; // click suppressed
     var mouse = d3.mouse(this);
     var currentPos = mouse[0] - margin.left;
-    marker.attr('cx', currentPos);
 
     var timestamp = x.invert(currentPos-2),
       index = bisect(data, timestamp),
@@ -114,17 +126,28 @@ d3.csv("csvlist.csv", type, function(error, data) {
       closest = distance / range;
       if (closest > 1) {closest = 1}
       valueY = interpolate(closest);
-      marker.attr('cy', y(valueY));
-      console.log(distance, closest);
 
-      //add a circle at a point of selection
-      trans.append("circle")
-        .style("stroke", "gray")
-        .style("fill", "white")
-        .attr("r", 10)
-        .attr("cx", currentPos)
-        .attr("cy", y(valueY));
-        //.on("click", toggleColor);
+      currentPeaks = d3.selectAll(".userPeak")[0].length;
+
+      if (currentPeaks < totalPeaks){
+        //add a circle at a point of selection
+        trans.append("circle")
+          .attr("class", "userPeak")
+          .style("stroke", "gray")
+          .style("fill", "white")
+          .attr("r", 7)
+          .attr("cx", currentPos)
+          .attr("cy", y(valueY))
+          .on("click", toggleColor);
+      }
+
+
+    console.log("index of peaks")
+    d3.selectAll(".userPeak").each( function(d, i){
+      date = x.invert(d3.select(this).attr("cx"));
+      index = bisect(data, date);
+      console.log(  index );
+    });
 });
 
 
