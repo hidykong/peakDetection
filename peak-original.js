@@ -1,9 +1,9 @@
 
 var margin = {top: 20.5, right: 30, bottom: 30, left: 40.5},
-    width = 1400 - margin.left - margin.right,
+    width = 1500 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var totalPeaks = 10;
+var totalPeaks = 5;
 
 var x = d3.time.scale()
     .range([0, width]);
@@ -30,15 +30,15 @@ var svg = d3.select("body").append("svg")
 var trans = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var removeCircle = (function(){
-  return function(){  
-    var removeChecked = document.getElementById("remove").checked;
-    if (removeChecked) {
-      console.log("removed");
-      d3.select(this).remove();
+var toggleColor = (function(){
+   var currentColor = "white";
+    
+    return function(){
+        currentColor = currentColor == "white" ? "magenta" : "white";
+        d3.select(this).style("fill", currentColor);
     }
-  }
 })();
+
 
 d3.csv("csvlist.csv", type, function(error, data) {
 
@@ -67,8 +67,8 @@ d3.csv("csvlist.csv", type, function(error, data) {
       .attr("d", line)
     .style('fill', 'none')
     .style('pointer-events', 'none')
-    .style('stroke', 'grey')
-    .style('stroke-width', '1px');
+    .style('stroke', '#FB5050')
+    .style('stroke-width', '3px');
 
   // Append marker
   var marker = trans.append('circle')
@@ -115,11 +115,9 @@ d3.csv("csvlist.csv", type, function(error, data) {
   });
 
   svg.on("click", function() {
-  var removeChecked = document.getElementById("remove").checked;
-  if (d3.event.defaultPrevented || removeChecked) return; // click suppressed
+  if (d3.event.defaultPrevented) return; // click suppressed
     var mouse = d3.mouse(this);
     var currentPos = mouse[0] - margin.left;
-
 
     var timestamp = x.invert(currentPos-2),
       index = bisect(data, timestamp),
@@ -139,11 +137,11 @@ d3.csv("csvlist.csv", type, function(error, data) {
         trans.append("circle")
           .attr("class", "userPeak")
           .style("stroke", "gray")
-          .style("fill", '#FB5050')
+          .style("fill", "white")
           .attr("r", 7)
           .attr("cx", currentPos)
           .attr("cy", y(valueY))
-          .on("click", removeCircle);
+          .on("click", toggleColor);
       }
 
     userPeaks = [];
@@ -168,17 +166,9 @@ function type(d) {
 }
 
 function saveFile(){
-  if (userPeaks.length != 10){
-    alert("You didn't mark ten peaks yet!");
-  } else {
-    console.log(userPeaks);
-    var d = new Date();
-    var n = d.getTime();
-    var x = JSON.stringify(userPeaks);
-    $.post("savePeak.php", {data : x, refNo: n}, function(){
-      window.location.href = "results.html#refNo=" + n;
-    });
-  }
+ console.log(userPeaks);
+ var x = JSON.stringify(userPeaks);
+ $.post("savePeak.php", {data : x}, function(){alert("File saved successfully")});
 }
 
 
