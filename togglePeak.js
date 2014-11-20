@@ -1,9 +1,9 @@
-
 var margin = {top: 20.5, right: 30, bottom: 30, left: 40.5},
     width = 1400 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var totalPeaks = 10;
+
 
 var x = d3.time.scale()
     .range([0, width]);
@@ -40,7 +40,7 @@ var removeCircle = (function(){
   }
 })();
 
-d3.csv("list2.csv", type, function(error, data) {
+d3.csv("csvlist.csv", type, function(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.time; }));
   y.domain(d3.extent(data, function(d) { return d.value; }));
@@ -56,6 +56,7 @@ d3.csv("list2.csv", type, function(error, data) {
       .call(yAxis)
     .append("text")
       .attr("class", "title")
+      //.attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", "-1.0em")
       .text("Value");
@@ -112,6 +113,36 @@ d3.csv("list2.csv", type, function(error, data) {
       marker.attr('cy', y(valueY));
     }
   });
+
+
+  //draw the userpeaks
+  var peaks = new Array();
+  peaks = $.get('upload/peakIndex.txt', function(peakFile){
+
+      peaks = peakFile.split(',');
+      peaks[0] = peaks[0].replace('\[','');
+      peaks[peaks.length -1]= peaks[peaks.length -1].replace('\]','');
+      peaks = peaks.map(Number); //convert to numbers
+
+      for (i = 0; i < peaks.length; i++){
+        index = peaks[i];
+        peak = data[index];
+        currentX = x(peak.time);
+        currentY = y(peak.value);
+
+         trans.append("circle")
+          .attr("class", "userPeak")
+          .style("stroke", "gray")
+          .style("fill", '#FB5050')
+          .attr("r", 7)
+          .attr("cx", currentX)
+          .attr("cy", currentY);
+      }
+      console.log(peaks, "hello");
+
+  }, 'text');
+
+
 
   svg.on("click", function() {
   var removeChecked = document.getElementById("remove").checked;

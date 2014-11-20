@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<style>
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis .title {
+  font-weight: bold;
+  text-anchor: end;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+<h2> Instructions</h2>
+<p>Mark 10 major peaks of the graph by clicking on the graph.<br>
+You can remove a peak by checking the Remove radio button and clicking on the circle again.<br>
+Click the submit button when you're done and enter the verification number you get on Mturk.</p>
+<form action="">
+<input type="radio" name="circle" id="add" checked>Add<br>
+<input type="radio" name="circle" id="remove">Remove
+</form>
+<button onclick="saveFile()">Submit</button>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="loadPeak.js"></script>
+</body>
+</html>
