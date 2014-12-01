@@ -45,8 +45,7 @@ var removeCircle = (function(){
   }
 })();
 
-d3.csv("testing1.csv", type, function(error, data) {
-//  d3.csv("graphs/graph1.csv", type, function(error, data) {
+d3.csv("../graphs/graph1.csv", type, function(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.time; }));
   y.domain(d3.extent(data, function(d) { return d.value; }));

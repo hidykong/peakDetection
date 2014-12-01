@@ -2,8 +2,6 @@ var margin = {top: 20.5, right: 30, bottom: 30, left: 40.5},
     width = 1400 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var totalPeaks = 10;
-
 
 var x = d3.time.scale()
     .range([0, width]);
@@ -37,11 +35,10 @@ var removeCircle = (function(){
       console.log("removed");
       d3.select(this).remove();
     }
-
   }
 })();
 
-d3.csv("graphs/graph1.csv", type, function(error, data) {
+d3.csv("../graphs/graph1.csv", type, function(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.time; }));
   y.domain(d3.extent(data, function(d) { return d.value; }));
@@ -86,66 +83,6 @@ d3.csv("graphs/graph1.csv", type, function(error, data) {
   }).right;
 
   
-// Add event listeners/handlers
-  svg.on('mouseover', function() {
-    marker.style('display', 'inherit');
-  }).on('mouseout', function() {
-    marker.style('display', 'none');
-  }).on('mousemove', function() {
-    var mouse = d3.mouse(this);
-    var currentPos = mouse[0] - margin.left;
-
-    if (currentPos > 0 && currentPos < width){
-
-    var timestamp = x.invert(currentPos-2),
-      index = bisect(data, timestamp),
-      startDatum = data[index - 1],
-      endDatum = data[index],
-      interpolate = d3.interpolateNumber(startDatum.value, endDatum.value),
-      range = x(endDatum.time) - x(startDatum.time),
-      distance = currentPos - x(startDatum.time);
-      closest = distance / range;
-
-      if (closest > 1) {closest = 1}
-      valueY = interpolate(closest);
-
-      marker.attr('cx', currentPos);
-      marker.attr('cy', y(valueY));
-    }
-  });
-
-
-  //draw the userpeaks
-  var peaks = new Array();
-  //peaks = $.get('upload/peakIndex.txt', function(peakFile){
-  peaks = $.get('answer/10.txt', function(peakFile){
-    console.log("hello");
-      offset = 12; //click offset with the peaks
-      offset = 0;
-      peaks = peakFile.split(',');
-      //peaks = peakFile.split('\n');
-      peaks[0] = peaks[0].replace('\[','');
-      peaks[peaks.length -1]= peaks[peaks.length -1].replace('\]','');
-      peaks = peaks.map(Number); //convert to numbers
-
-      console.log(peaks);
-
-      for (i = 0; i < peaks.length; i++){
-        index = peaks[i];
-        peak = data[index - offset];
-        currentX = x(peak.time);
-        currentY = y(peak.value);
-
-         trans.append("circle")
-          .attr("class", "userPeak")
-          .style("stroke", "gray")
-          .style("fill", '#FB5050')
-          .attr("r", 7)
-          .attr("cx", currentX)
-          .attr("cy", currentY);
-      }
-
-  }, 'text');
 
 });
 
@@ -157,3 +94,15 @@ function type(d) {
   d.value = +d.value; 
   return d;
 }
+
+function passCount(){
+  count = document.getElementById("count").value;
+  if (!count){
+    alert("You didn't enter the number of peaks!");
+  } else{
+    window.location.href = "index2.html#count=" + count;
+  }
+}
+
+
+

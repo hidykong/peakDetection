@@ -1,10 +1,15 @@
 
 var margin = {top: 20.5, right: 30, bottom: 30, left: 40.5},
-    width = 1500 - margin.left - margin.right,
+    width = 1400 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var totalPeaks = 5;
+if (params.count){
+  var totalPeaks = params.count;
+}else{
+  var totalPeaks = 10;
+}
 
+document.getElementById("peakCount").innerHTML = totalPeaks;
 var x = d3.time.scale()
     .range([0, width]);
 
@@ -30,17 +35,17 @@ var svg = d3.select("body").append("svg")
 var trans = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var toggleColor = (function(){
-   var currentColor = "white";
-    
-    return function(){
-        currentColor = currentColor == "white" ? "magenta" : "white";
-        d3.select(this).style("fill", currentColor);
+var removeCircle = (function(){
+  return function(){  
+    var removeChecked = document.getElementById("remove").checked;
+    if (removeChecked) {
+      console.log("removed");
+      d3.select(this).remove();
     }
+  }
 })();
 
-
-d3.csv("csvlist.csv", type, function(error, data) {
+d3.csv("../graphs/graph3.csv", type, function(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.time; }));
   y.domain(d3.extent(data, function(d) { return d.value; }));
@@ -56,9 +61,8 @@ d3.csv("csvlist.csv", type, function(error, data) {
       .call(yAxis)
     .append("text")
       .attr("class", "title")
-      .attr("transform", "rotate(-90)")
       .attr("y", 6)
-      .attr("dy", ".71em")
+      .attr("dy", "-1.0em")
       .text("Value");
 
   var path = trans.append("path")
@@ -67,8 +71,8 @@ d3.csv("csvlist.csv", type, function(error, data) {
       .attr("d", line)
     .style('fill', 'none')
     .style('pointer-events', 'none')
-    .style('stroke', '#FB5050')
-    .style('stroke-width', '3px');
+    .style('stroke', 'grey')
+    .style('stroke-width', '1px');
 
   // Append marker
   var marker = trans.append('circle')
@@ -115,9 +119,11 @@ d3.csv("csvlist.csv", type, function(error, data) {
   });
 
   svg.on("click", function() {
-  if (d3.event.defaultPrevented) return; // click suppressed
+  var removeChecked = document.getElementById("remove").checked;
+  if (d3.event.defaultPrevented || removeChecked) return; // click suppressed
     var mouse = d3.mouse(this);
     var currentPos = mouse[0] - margin.left;
+
 
     var timestamp = x.invert(currentPos-2),
       index = bisect(data, timestamp),
@@ -137,11 +143,11 @@ d3.csv("csvlist.csv", type, function(error, data) {
         trans.append("circle")
           .attr("class", "userPeak")
           .style("stroke", "gray")
-          .style("fill", "white")
+          .style("fill", '#FB5050')
           .attr("r", 7)
           .attr("cx", currentPos)
           .attr("cy", y(valueY))
-          .on("click", toggleColor);
+          .on("click", removeCircle);
       }
 
     userPeaks = [];
@@ -166,9 +172,17 @@ function type(d) {
 }
 
 function saveFile(){
- console.log(userPeaks);
- var x = JSON.stringify(userPeaks);
- $.post("savePeak.php", {data : x}, function(){alert("File saved successfully")});
+  if (userPeaks.length != totalPeaks){
+    alert("You didn't mark " + totalPeaks + " peaks yet!");
+  } else {
+    console.log(userPeaks);
+    var d = new Date();
+    var n = d.getTime();
+    var x = JSON.stringify(userPeaks);
+    $.post("savePeak.php", {data : x, refNo: n}, function(){
+      window.location.href = "results.html#refNo=" + n;
+    });
+  }
 }
 
 

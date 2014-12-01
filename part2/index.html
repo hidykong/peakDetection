@@ -29,22 +29,17 @@
   stroke: steelblue;
   stroke-width: 1.5px;
 }
-
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body>
 <h2> Instructions</h2>
-<p>Mark <span id="peakCount">10</span> major peaks of the graph by clicking on the graph.<br>
-You can remove a peak by checking the Remove radio button and clicking on the red circle again.<br>
-Click the submit button when you're done and enter the reference code you get on Mturk.</p>
+<p>Enter the number of major peaks in the graph and press the Next button.</p>
 <form action="">
-<input type="radio" name="circle" id="add" checked>Add<br>
-<input type="radio" name="circle" id="remove">Remove
+Number of Peaks <input type="text" name="circle" id="count">
 </form>
-<button style="margin-top:15pt" onclick="saveFile()">Submit</button>
+<button style="margin-top: 15pt" onclick="passCount()">Next</button>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="results.js"></script>
-<script src="clickPeak.js"></script>
+<script src="countPeaks.js"></script>
 </body>
 </html>

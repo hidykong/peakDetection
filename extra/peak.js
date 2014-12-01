@@ -28,7 +28,7 @@ var svg = d3.select("body").append("svg")
 var trans = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("csvlist.csv", type, function(error, data) {
+d3.csv("graph1.csv", type, function(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.time; }));
   y.domain(d3.extent(data, function(d) { return d.value; }));
