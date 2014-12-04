@@ -9,12 +9,6 @@ if (params.count){
   var totalPeaks = 10;
 }
 
-if (params.graph){
-  var graphNo = params.graph;
-}else{
-  var graphNo = "7";
-}
-
 document.getElementById("peakCount").innerHTML = totalPeaks;
 var x = d3.time.scale()
     .range([0, width]);
@@ -51,9 +45,7 @@ var removeCircle = (function(){
   }
 })();
 
-
-d3.csv("../graphs/graph" + graphNo + ".csv", type, function(error, data) {
-
+d3.csv("../graphs/graph1.csv", type, function(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.time; }));
   y.domain(d3.extent(data, function(d) { return d.value; }));
@@ -173,9 +165,8 @@ d3.csv("../graphs/graph" + graphNo + ".csv", type, function(error, data) {
 var parseDate = d3.time.format("%H:%M:%S.%L").parse;
 
 function type(d) {
-  //d.time = new Date(+parseDate(d.time)); //create a date in milliseconds
-  //d.milli = d.time.getTime();
-  d.time = +d.time;
+  d.time = new Date(+parseDate(d.time)); //create a date in milliseconds
+  d.milli = d.time.getTime();
   d.value = +d.value; 
   return d;
 }

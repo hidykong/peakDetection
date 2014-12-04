@@ -188,7 +188,7 @@ function saveFile(){
     var d = new Date();
     var n = d.getTime();
     var x = JSON.stringify(userPeaks);
-    $.post("savePeak.php", {data : x, refNo: n}, function(){
+    $.post("savePeak.php", {data : x, refNo: n, graphNo: graphNo}, function(){
       window.location.href = "results.html#refNo=" + n;
     });
   }

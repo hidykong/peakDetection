@@ -51,6 +51,8 @@ var removeCircle = (function(){
   }
 })();
 
+var path = "../graphs/graph" + graphNo + ".csv";
+console.log(path);
 
 d3.csv("../graphs/graph" + graphNo + ".csv", type, function(error, data) {
 
@@ -188,11 +190,10 @@ function saveFile(){
     var d = new Date();
     var n = d.getTime();
     var x = JSON.stringify(userPeaks);
-    $.post("savePeak.php", {data : x, refNo: n}, function(){
+    $.post("savePeak.php", {data : x, refNo: n, graphNo: graphNo}, function(){
       window.location.href = "results.html#refNo=" + n;
     });
   }
 }
-
 
 
