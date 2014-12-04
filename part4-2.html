@@ -1,0 +1,52 @@
+<!-- Bootstrap v3.0.3 -->
+<link href="https://s3.amazonaws.com/mturk-public/bs30/css/bootstrap.min.css" rel="stylesheet" />
+<section class="container" id="TranscriptionFromAnImage" style="margin-bottom:15px; padding: 10px 10px; font-family: Verdana, Geneva, sans-serif; color:#333333; font-size:0.9em;">
+<div class="row col-xs-12 col-md-12"><!-- Instructions -->
+<div class="panel panel-primary">
+<div class="panel-heading"><strong>Instructions</strong></div>
+
+<div class="panel-body">
+<p>Classify the peaks of a graph.</p>
+
+<ul>
+	<li>Look at the graph and classify the peaks into three groups.</li>
+	<li>Divide into major (most obvious) peaks, minor peaks (less obvious), and points that are not peaks.</li>
+	<li><strong>Answers that don&#39;t contain all the peaks will be rejected </strong>(make sure you classify all the&nbsp;peaks).</li>
+	<li>Set the peaks apart by commas.</li>
+</ul>
+</div>
+
+<p>Here is an example of a graph with peaks marked by red letters and a classification&nbsp;of all the peaks.</p>
+
+<p><strong>List of major peaks </strong>:<strong> j, a, e</strong></p>
+
+<p><strong>List of minor peaks:&nbsp;f, i, b, c, d, g</strong></p>
+
+<p><strong>List of non-peaks:&nbsp;h</strong></p>
+
+<p>&nbsp;</p>
+<img alt="image1" src="http://web.engr.illinois.edu/~hkong6/results/example-part4.png" style="width: 1000px; height: 347px;" />
+<p>&nbsp;</p>
+</div>
+<!-- End Instructions -->
+
+<fieldset>
+<div><img alt="image_url" class="imagecontainer" src="http://web.engr.illinois.edu/~hkong6/dm/part4/graph2-part4.png" style="width: 1000px; height: 347px;" /></div>
+
+<div class="inputfields">
+<div class="form-group"><label>List of major peaks:</label> <input class="form-control" name="MajorPeaks" size="50" type="text" /></div>
+
+<div class="form-group">&nbsp;</div>
+
+<div class="form-group"><label style="font-family: Verdana, Geneva, sans-serif; font-size: 12px; line-height: 20.7999992370605px;">List of minor peaks:</label><input class="form-control" name="MinorPeaks" size="50" style="font-family: Verdana, Geneva, sans-serif; width: 397px;" type="text" /></div>
+
+<div class="form-group">&nbsp;</div>
+
+<div class="form-group"><label style="font-family: Verdana, Geneva, sans-serif; font-size: 12px; line-height: 20.7999992370605px;">List of non-peaks:</label><input class="form-control" name="NotPeaks" size="50" style="font-family: Verdana, Geneva, sans-serif; width: 397px;" type="text" /></div>
+</div>
+</fieldset>
+</div>
+</section>
+<!-- close container -->
+<style type="text/css">.imagecontainer { display:block; float: left; position: relative; border:1px solid #fbfbfb; margin:0px 15px 20px 0px; height:auto; width:350px; } .inputfields { display:block; float:left; }
+</style>

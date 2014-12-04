@@ -43,7 +43,6 @@ d3.csv("../graphs/graph1.csv", type, function(error, data) {
   x.domain(d3.extent(data, function(d) { return d.time; }));
   y.domain(d3.extent(data, function(d) { return d.value; }));
 
-
   trans.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -81,8 +80,6 @@ d3.csv("../graphs/graph1.csv", type, function(error, data) {
   var bisect = d3.bisector(function(datum) {
     return datum.time;
   }).right;
-
-  
 
 });
 
